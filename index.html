@@ -933,4 +933,92 @@
 
             const imageEl = document.createElement("img");
             imageEl.src = img.download_url;
+            imageEl.alt = img.name;
 
+            slideDiv.appendChild(imageEl);
+            slideshow.appendChild(slideDiv);
+
+            const dot = document.createElement("span");
+            dot.className = "dot";
+            dot.onclick = () => currentSlide(index + 1);
+            dotsContainer.appendChild(dot);
+          });
+
+          // Add arrows
+          const prev = document.createElement("a");
+          prev.className = "prev";
+          prev.innerHTML = "&#10094;";
+          prev.onclick = () => plusSlides(-1);
+
+          const next = document.createElement("a");
+          next.className = "next";
+          next.innerHTML = "&#10095;";
+          next.onclick = () => plusSlides(1);
+
+          slideshow.appendChild(prev);
+          slideshow.appendChild(next);
+
+          slideIndex = 1;
+          showSlides(slideIndex);
+
+          // Optional autoplay:
+          // setInterval(() => { plusSlides(1); }, 5000);
+        })
+        .catch(err => {
+          console.error(err);
+          statusEl.textContent = "Network error loading gallery.";
+        });
+    }
+
+    // ---------- FORMS → GOOGLE SHEETS ----------
+    function handleForm(formId, statusId, formType) {
+      const form = document.getElementById(formId);
+      const statusEl = document.getElementById(statusId);
+      if (!form || !statusEl) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        statusEl.textContent = "Sending...";
+        statusEl.classList.remove("success", "error");
+
+        const formData = new FormData(form);
+        formData.append("formType", formType);
+
+        const body = new URLSearchParams(formData).toString();
+
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+          },
+          body
+        })
+          .then(response => response.json())
+          .then(result => {
+            if (result.success) {
+              statusEl.textContent = "Thank you! Your submission has been received.";
+              statusEl.classList.add("success");
+              form.reset();
+            } else {
+              statusEl.textContent = "Something went wrong. Please try again.";
+              statusEl.classList.add("error");
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            statusEl.textContent = "Network error. Please try again.";
+            statusEl.classList.add("error");
+          });
+      });
+    }
+
+    // ---------- INITIALISE ON LOAD ----------
+    window.addEventListener("DOMContentLoaded", () => {
+      buildGalleryFromGitHub();
+      handleForm("registration-form", "reg-status", "registration");
+      handleForm("ideas-form", "idea-status", "idea");
+    });
+  </script>
+</body>
+</html>
