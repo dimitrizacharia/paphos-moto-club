@@ -832,17 +832,63 @@
   </footer>
 
   <script>
-  <script>
-  // 1) PASTE YOUR GOOGLE SCRIPT URL HERE
-  const SCRIPT_URL = https://script.google.com/macros/s/AKfycbwNPJL4NOxzsuVNyNRYIDp-79wZ9XGNdtHsG75aoxfPmNU1UhGm0rBeB4eHvhLio8xBgw/exec
+    // 1) PASTE YOUR GOOGLE SCRIPT URL HERE
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNPJL4NOxzsuVNyNRYIDp-79wZ9XGNdtHsG75aoxfPmNU1UhGm0rBeB4eHvhLio8xBgw/exec";
 
-  // Dynamic year
-  document.getElementById("year").textContent = new Date().getFullYear();
+    // Dynamic year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Helper to send data to Google Script
-  function handleForm(formId, statusId, formType) {
-    const form = document.getElementById(formId);
-    const statusEl = document.getElementById(statusId);
+    // Helper to send data to Google Script
+    function handleForm(formId, statusId, formType) {
+      const form = document.getElementById(formId);
+      const statusEl = document.getElementById(statusId);
+
+      if (!form || !statusEl) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        statusEl.textContent = "Sending...";
+        statusEl.classList.remove("success", "error");
+
+        const formData = new FormData(form);
+        // Add which form it is (registration / idea)
+        formData.append("formType", formType);
+
+        const body = new URLSearchParams(formData).toString();
+
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+          },
+          body
+        })
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            statusEl.textContent = "Thank you! Your submission has been received.";
+            statusEl.classList.add("success");
+            form.reset();
+          } else {
+            statusEl.textContent = "Something went wrong. Please try again.";
+            statusEl.classList.add("error");
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          statusEl.textContent = "Network error. Please try again.";
+          statusEl.classList.add("error");
+        });
+      });
+    }
+
+    // Attach handlers to both forms
+    handleForm("registration-form", "reg-status", "registration");
+    handleForm("ideas-form", "idea-status", "idea");
+  </script>
+</body>
+</html>
 
     if (!form || !statusEl) return;
 
