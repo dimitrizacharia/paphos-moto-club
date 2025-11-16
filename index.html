@@ -832,38 +832,60 @@
   </footer>
 
   <script>
-    // Dynamic year
-    document.getElementById("year").textContent = new Date().getFullYear();
+  <script>
+  // 1) PASTE YOUR GOOGLE SCRIPT URL HERE
+  const SCRIPT_URL = https://script.google.com/macros/s/AKfycbwNPJL4NOxzsuVNyNRYIDp-79wZ9XGNdtHsG75aoxfPmNU1UhGm0rBeB4eHvhLio8xBgw/exec
 
-    // Simple front-end handling for forms (no real backend yet)
-    function handleForm(formId, statusId) {
-      const form = document.getElementById(formId);
-      const statusEl = document.getElementById(statusId);
+  // Dynamic year
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-      if (!form || !statusEl) return;
+  // Helper to send data to Google Script
+  function handleForm(formId, statusId, formType) {
+    const form = document.getElementById(formId);
+    const statusEl = document.getElementById(statusId);
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+    if (!form || !statusEl) return;
 
-        statusEl.textContent = "";
-        statusEl.classList.remove("success", "error");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+      statusEl.textContent = "Sending...";
+      statusEl.classList.remove("success", "error");
 
-        // At this point you would normally send `data` to a server or service like Formspree.
-        // For now, we just simulate success:
-        console.log("Form submitted:", formId, data);
+      const formData = new FormData(form);
+      // Add which form it is (registration / idea)
+      formData.append("formType", formType);
 
-        statusEl.textContent = "Thank you! Your submission has been received.";
-        statusEl.classList.add("success");
+      // Convert to URL-encoded format (simpler for Google Script)
+      const body = new URLSearchParams(formData).toString();
 
-        form.reset();
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        },
+        body
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          statusEl.textContent = "Thank you! Your submission has been received.";
+          statusEl.classList.add("success");
+          form.reset();
+        } else {
+          statusEl.textContent = "Something went wrong. Please try again.";
+          statusEl.classList.add("error");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        statusEl.textContent = "Network error. Please try again.";
+        statusEl.classList.add("error");
       });
-    }
+    });
+  }
 
-    handleForm("registration-form", "reg-status");
-    handleForm("ideas-form", "idea-status");
-  </script>
-</body>
-</html>
+  // Attach handlers to both forms
+  handleForm("registration-form", "reg-status", "registration");
+  handleForm("ideas-form", "idea-status", "idea");
+</script>
