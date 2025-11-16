@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paphos Motorcycle Club</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #05060a;
+      --bg-section: #11121a;
+      --accent: #e53935;
+      --accent-light: #ff6f60;
+      --text-main: #f5f5f5;
+      --text-muted: #aaaaaa;
+      --card-bg: #181925;
+      --border-soft: #2a2b40;
+      --radius-xl: 18px;
+      --shadow-soft: 0 18px 35px rgba(0, 0, 0, 0.45);
+      --transition-fast: 0.2s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #202234 0, #05060a 45%);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrapper {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 16px 64px;
+    }
+
+    /* NAVBAR */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(5, 6, 10, 0.96), rgba(5, 6, 10, 0.82));
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    .logo-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffffff 0, #e53935 15%, #05060a 70%);
+      box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.6), 0 0 24px rgba(229, 57, 53, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-mark::after {
+      content: "";
+      position: absolute;
+      inset: 10%;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.6);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      transform: rotate(-30deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--text-muted);
+      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 0 18px rgba(229,57,53,0.75);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px) scale(1.02);
+      filter: brightness(1.08);
+      box-shadow: 0 0 26px rgba(229,57,53,0.9);
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* HERO */
+    .hero {
+      padding: 50px 0 36px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 30px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 28px;
+      }
+    }
+
+    .hero-text h1 {
+      font-size: clamp(2.4rem, 4vw, 3.1rem);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .hero-text h1 span {
+      background: linear-gradient(135deg, #ff8a65, #ff5252);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      max-width: 420px;
+      font-size: 0.98rem;
+      margin-bottom: 18px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), filter var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(229, 57, 53, 0.5);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px) scale(1.01);
+      filter: brightness(1.08);
+      box-shadow: 0 14px 32px rgba(229, 57, 53, 0.7);
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.22);
+      background: transparent;
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-1px);
+    }
+
+    .hero-meta {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Hero image card */
+    .hero-visual {
+      position: relative;
+      min-height: 260px;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 26px;
+      padding: 18px 18px 16px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.15) 0, transparent 50%),
+        radial-gradient(circle at bottom right, rgba(229,57,53,0.5) 0, rgba(5,6,10,1) 60%);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-bike {
+      width: 100%;
+      height: 180px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(135deg, rgba(0,0,0,0.9), rgba(0,0,0,0.5)),
+        url("https://images.pexels.com/photos/1415853/pexels-photo-1415853.jpeg?auto=compress&cs=tinysrgb&w=1200")
+        center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bike::after {
+      content: "PAPHOS • NIGHT RIDE";
+      position: absolute;
+      bottom: 10px;
+      left: 14px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: rgba(5,6,10,0.76);
+      color: var(--text-main);
+    }
+
+    .hero-pill {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .hero-pill span:first-child {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .hero-status {
+      font-size: 0.72rem;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(5,6,10,0.9);
+      border: 1px solid rgba(255,255,255,0.16);
+      color: #8bc34a;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* SECTION BASE */
+    section {
+      margin-top: 40px;
+      padding: 26px 22px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(145deg, rgba(12,13,23,0.96), rgba(12,13,22,0.98));
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 22px 40px rgba(0,0,0,0.65);
+    }
+
+    section header.section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    section header.section-header h2 {
+      font-size: 1.25rem;
+    }
+
+    section header.section-header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 360px;
+    }
+
+    @media (max-width: 720px) {
+      section {
+        padding: 20px 16px;
+      }
+      section header.section-header {
+        flex-direction: column;
+      }
+    }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      background: #000;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      display: block;
+    }
+
+    .gallery-item::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.08);
+      opacity: 0.9;
+    }
+
+    /* EVENTS */
+    .events-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .event-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 14px 14px 14px;
+      border: 1px solid var(--border-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .event-chip {
+      font-size: 0.7rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .event-title {
+      font-size: 1rem;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    .event-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .event-meta span {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .event-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      margin-top: 4px;
+    }
+
+    .pill-date {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* FORMS */
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 22px;
+    }
+
+    @media (max-width: 900px) {
+      .form-grid {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    form {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--border-soft);
+    }
+
+    form h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .field {
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .field.half {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(3,4,10,0.9);
+      padding: 8px 11px;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      outline: none;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+      font-family: inherit;
+    }
+
+    textarea {
+      border-radius: 12px;
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255,255,255,0.35);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent-light);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 0 20px rgba(229,57,53,0.55);
+      background: rgba(3,4,10,1);
+      transform: translateY(-0.5px);
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .form-status {
+      font-size: 0.8rem;
+      min-height: 18px;
+    }
+
+    .form-status.success {
+      color: #9ccc65;
+    }
+
+    .form-status.error {
+      color: #ff8a80;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 22px 16px 40px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--accent-light);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <span>Paphos Moto Club</span>
+      </div>
+      <div class="nav-links">
+        <a href="#gallery">Gallery</a>
+        <a href="#events">Events</a>
+        <a href="#join">Join</a>
+        <a href="#ideas">Ideas</a>
+      </div>
+      <a href="#join" class="nav-cta">Join the Club</a>
+    </nav>
+  </header>
+
+  <main class="wrapper">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-text">
+        <h1>
+          Paphos <span>Motorcycle Club</span>
+        </h1>
+        <p class="hero-subtitle">
+          Local riders, enduro fanatics, road warriors and weekend cruisers — all in one community based in Paphos, Cyprus.
+          Rides, events, races and good vibes.
+        </p>
+        <div class="hero-tags">
+          <div class="tag">Enduro &amp; MX</div>
+          <div class="tag">Street &amp; Adventure</div>
+          <div class="tag">Paphos • Cyprus</div>
+        </div>
+        <div class="hero-buttons">
+          <a href="#join" class="btn btn-primary">Become a Member</a>
+          <a href="#events" class="btn btn-outline">View Upcoming Events</a>
+        </div>
+        <p class="hero-meta">
+          Open to all brands &amp; levels. Helmets on, ego off. 🏍️
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-bike"></div>
+          <div class="hero-pill">
+            <span>Next ride: Sunday</span>
+            <span class="hero-status">Spots available</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+      <header class="section-header">
+        <div>
+          <h2>Club Gallery</h2>
+          <p>Race days, trail rides, coffee stops and late-night garage moments. Replace these images with your own photos.</p>
+        </div>
+      </header>
+
+      <div class="gallery-grid">
+        <div class="gallery-item" data-label="Enduro">
+          <img src="https://images.pexels.com/photos/1469617/pexels-photo-1469617.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Enduro ride">
+        </div>
+        <div class="gallery-item" data-label="Street Ride">
+          <img src="https://images.pexels.com/photos/210182/pexels-photo-210182.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Street ride">
+        </div>
+        <div class="gallery-item" data-label="Sunset">
+          <img src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Sunset ride">
+        </div>
+        <div class="gallery-item" data-label="Paddock">
+          <img src="https://images.pexels.com/photos/1469498/pexels-photo-1469498.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Pit area">
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTS -->
+    <section id="events">
+      <header class="section-header">
+        <div>
+          <h2>Upcoming Events</h2>
+          <p>Group rides, training days and race weekends. Edit these cards with your real events.</p>
+        </div>
+        <p>Want to propose something new? Scroll down to “Event Ideas” and drop your plan.</p>
+      </header>
+
+      <div class="events-list">
+        <article class="event-card">
+          <div class="event-chip">Group Ride</div>
+          <h3 class="event-title">Coastal Sunset Cruise</h3>
+          <p class="event-meta">
+            <span>📍 Paphos Harbour → Coral Bay</span>
+            <span>🕒 Meet: 17:30</span>
+          </p>
+          <p class="event-meta">
+            Relaxed pace, all bikes welcome. Perfect for new members.
+          </p>
+          <div class="event-footer">
+            <span class="pill-date">Sun • 08 Dec 2025</span>
+            <a href="#join" class="btn btn-outline" style="padding:6px 14px;font-size:0.78rem;">Reserve Spot</a>
+          </div>
+        </article>
+
+        <article class="event-card">
+          <div class="event-chip">Enduro Training</div>
+          <h3 class="event-title">Hard Enduro Skills Day</h3>
+          <p class="event-meta">
+            <span>📍 Paphos Hills</span>
+            <span>🕒 09:00 – 13:00</span>
+          </p>
+          <p class="event-meta">
+            Focus on hill climbs, technical sections and stamina. Intermediate &amp; advanced.
+          </p>
+          <div class="event-footer">
+            <span class="pill-date">Sat • 14 Dec 2025</span>
+            <a href="#join" class="btn btn-outline" style="padding:6px 14px;font-size:0.78rem;">Sign Up</a>
+          </div>
+        </article>
+
+        <article class="event-card">
+          <div class="event-chip">Social</div>
+          <h3 class="event-title">Garage Night &amp; BBQ</h3>
+          <p class="event-meta">
+            <span>📍 Paphos Moto Club HQ</span>
+            <span>🕒 19:30</span>
+          </p>
+          <p class="event-meta">
+            Bike talk, setup tips, burgers and music. Family &amp; friends welcome.
+          </p>
+          <div class="event-footer">
+            <span class="pill-date">Fri • 20 Dec 2025</span>
+            <a href="#join" class="btn btn-outline" style="padding:6px 14px;font-size:0.78rem;">I'm coming</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- FORMS: REGISTRATION + IDEAS -->
+    <section id="join">
+      <header class="section-header">
+        <div>
+          <h2>Join the Club &amp; Share Your Ideas</h2>
+          <p>Online registration for new members plus a dedicated space to suggest new rides, races or events.</p>
+        </div>
+      </header>
+
+      <div class="form-grid">
+        <!-- REGISTRATION FORM -->
+        <form id="registration-form">
+          <h3>Online Registration</h3>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
+            Fill in your details and we’ll get back to you with membership info and next steps.
+          </p>
+
+          <div class="form-row">
+            <div class="field half">
+              <label for="reg-name">Full Name *</label>
+              <input id="reg-name" name="name" type="text" placeholder="Your full name" required>
+            </div>
+            <div class="field half">
+              <label for="reg-email">Email *</label>
+              <input id="reg-email" name="email" type="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field half">
+              <label for="reg-phone">Phone (WhatsApp)</label>
+              <input id="reg-phone" name="phone" type="tel" placeholder="+357 ...">
+            </div>
+            <div class="field half">
+              <label for="reg-bike">Bike Type</label>
+              <input id="reg-bike" name="bike" type="text" placeholder="Enduro, MX, Naked, ADV, etc.">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="reg-experience">Riding Experience</label>
+            <select id="reg-experience" name="experience">
+              <option value="">Select level</option>
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+              <option>Racer</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="reg-message">Anything we should know? (optional)</label>
+            <textarea id="reg-message" name="message" placeholder="Tell us about your riding style, preferences, or goals."></textarea>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-primary">Submit Registration</button>
+            <span class="form-status" id="reg-status"></span>
+          </div>
+        </form>
+
+        <!-- IDEAS FORM -->
+        <form id="ideas-form" id="ideas">
+          <h3 id="ideas">Event Ideas</h3>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
+            Got an idea for a ride, race, training or social night? Drop it here.
+          </p>
+
+          <div class="field">
+            <label for="idea-name">Name *</label>
+            <input id="idea-name" name="name" type="text" placeholder="Your name" required>
+          </div>
+
+          <div class="field">
+            <label for="idea-email">Email *</label>
+            <input id="idea-email" name="email" type="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="field">
+            <label for="idea-title">Event Title *</label>
+            <input id="idea-title" name="title" type="text" placeholder="e.g. Paphos Hard Enduro Sunday Loop" required>
+          </div>
+
+          <div class="field">
+            <label for="idea-details">Describe your idea *</label>
+            <textarea id="idea-details" name="details" placeholder="Route, level, number of riders, timing, anything else…" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="idea-type">Event Type</label>
+            <select id="idea-type" name="type">
+              <option value="">Select type</option>
+              <option>Group Ride</option>
+              <option>Training / Coaching</option>
+              <option>Race / Time Attack</option>
+              <option>Social / BBQ / Meeting</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-outline">Send Idea</button>
+            <span class="form-status" id="idea-status"></span>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Paphos Motorcycle Club. Built with 🏍️ and GitHub Pages.
+  </footer>
+
+  <script>
+    // Dynamic year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Simple front-end handling for forms (no real backend yet)
+    function handleForm(formId, statusId) {
+      const form = document.getElementById(formId);
+      const statusEl = document.getElementById(statusId);
+
+      if (!form || !statusEl) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        statusEl.textContent = "";
+        statusEl.classList.remove("success", "error");
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // At this point you would normally send `data` to a server or service like Formspree.
+        // For now, we just simulate success:
+        console.log("Form submitted:", formId, data);
+
+        statusEl.textContent = "Thank you! Your submission has been received.";
+        statusEl.classList.add("success");
+
+        form.reset();
+      });
+    }
+
+    handleForm("registration-form", "reg-status");
+    handleForm("ideas-form", "idea-status");
+  </script>
+</body>
+</html>
