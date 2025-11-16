@@ -53,78 +53,6 @@
       padding: 0 16px 64px;
     }
 
-    /* SLIDESHOW (GALLERY) */
-    .slideshow-container {
-      position: relative;
-      max-width: 900px;
-      margin: 24px auto 8px;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #000;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .mySlide {
-      display: none;
-    }
-
-    .mySlide img {
-      width: 100%;
-      display: block;
-    }
-
-    .prev, .next {
-      cursor: pointer;
-      position: absolute;
-      top: 50%;
-      padding: 12px;
-      margin-top: -22px;
-      font-weight: bold;
-      font-size: 18px;
-      border-radius: 0 3px 3px 0;
-      user-select: none;
-      background: rgba(0,0,0,0.4);
-      color: #fff;
-    }
-
-    .next {
-      right: 0;
-      border-radius: 3px 0 0 3px;
-    }
-
-    .prev:hover, .next:hover {
-      background: rgba(0,0,0,0.7);
-    }
-
-    .dots {
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    .dot {
-      cursor: pointer;
-      height: 10px;
-      width: 10px;
-      margin: 0 4px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .active-dot {
-      background-color: #717171;
-    }
-
-    .fade {
-      animation-name: fade;
-      animation-duration: 0.6s;
-    }
-
-    @keyframes fade {
-      from {opacity: 0.4}
-      to {opacity: 1}
-    }
-
     /* NAVBAR */
     header {
       position: sticky;
@@ -434,6 +362,49 @@
       }
     }
 
+    /* GALLERY GRID */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      background: #000;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      display: block;
+    }
+
+    .gallery-item::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.08);
+      opacity: 0.9;
+    }
+
     /* EVENTS */
     .events-list {
       display: grid;
@@ -661,17 +632,19 @@
       </div>
     </section>
 
-    <!-- GALLERY (AUTO SLIDESHOW) -->
+    <!-- GALLERY: AUTO-GRID FROM GITHUB -->
     <section id="gallery">
-      <h2>Photo Gallery</h2>
+      <header class="section-header">
+        <div>
+          <h2>Gallery</h2>
+          <p>Latest photos from Paphos Moto Club — automatically loaded from the Gallery folder.</p>
+        </div>
+        <p id="gallery-status">Loading latest club photos…</p>
+      </header>
 
-      <!-- Slides will be injected here -->
-      <div id="slideshow" class="slideshow-container"></div>
-
-      <!-- Dots will be injected here -->
-      <div id="dots" class="dots"></div>
-
-      <p id="gallery-status" style="text-align:center;font-size:0.8rem;color:#aaa;margin-top:8px;"></p>
+      <div id="gallery-grid" class="gallery-grid">
+        <!-- JS will inject images here -->
+      </div>
     </section>
 
     <!-- EVENTS -->
@@ -735,6 +708,10 @@
             <a href="#join" class="btn btn-outline" style="padding:6px 14px;font-size:0.78rem;">I'm coming</a>
           </div>
         </article>
+
+        <!-- To add more events:
+             copy one <article class="event-card">...</article>
+             block above and change the text/date. -->
       </div>
     </section>
 
@@ -852,61 +829,32 @@
   </footer>
 
   <script>
-    // ---------- CONFIG ----------
+    // 1) GOOGLE SCRIPT URL (same as before)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNPJL4NOxzsuVNyNRYIDp-79wZ9XGNdtHsG75aoxfPmNU1UhGm0rBeB4eHvhLio8xBgw/exec";
 
-    const GITHUB_USER = "dimitrizacharia";
-    const GITHUB_REPO = "paphos-moto-club";
-    const GALLERY_PATH = "Gallery"; // change to "gallery" if your folder is lowercase
-
+    // Dynamic year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // ---------- SLIDESHOW CORE ----------
-    let slideIndex = 1;
-
-    function showSlides(n) {
-      const slides = document.getElementsByClassName("mySlide");
-      const dots = document.getElementsByClassName("dot");
-
-      if (!slides.length) return;
-
-      if (n > slides.length) { slideIndex = 1; }
-      if (n < 1) { slideIndex = slides.length; }
-
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-      }
-
-      for (let i = 0; i < dots.length; i++) {
-        dots[i].classList.remove("active-dot");
-      }
-
-      slides[slideIndex - 1].style.display = "block";
-      if (dots[slideIndex - 1]) {
-        dots[slideIndex - 1].classList.add("active-dot");
-      }
-    }
-
-    function plusSlides(n) {
-      showSlides(slideIndex += n);
-    }
-
-    function currentSlide(n) {
-      showSlides(slideIndex = n);
-    }
-
     // ---------- AUTO GALLERY FROM GITHUB ----------
-    function buildGalleryFromGitHub() {
-      const slideshow = document.getElementById("slideshow");
-      const dotsContainer = document.getElementById("dots");
+    const GITHUB_USER = "dimitrizacharia";      // your GitHub username
+    const GITHUB_REPO = "paphosmc.org";         // the repo that hosts this site
+    const GALLERY_PATH = "Gallery";             // folder in the repo (capital G)
+
+    const GITHUB_GALLERY_API =
+      `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GALLERY_PATH}`;
+
+    function niceLabelFromFilename(name) {
+      let base = name.replace(/\.[^.]+$/, "");        // remove extension
+      base = base.replace(/[-_]+/g, " ");             // -/_ -> space
+      return base.replace(/\b\w/g, c => c.toUpperCase()); // capitalise
+    }
+
+    function loadGallery() {
       const statusEl = document.getElementById("gallery-status");
-      if (!slideshow || !dotsContainer) return;
+      const gridEl = document.getElementById("gallery-grid");
+      if (!statusEl || !gridEl) return;
 
-      statusEl.textContent = "Loading photos...";
-
-      const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GALLERY_PATH}`;
-
-      fetch(url)
+      fetch(GITHUB_GALLERY_API)
         .then(res => res.json())
         .then(items => {
           if (!Array.isArray(items)) {
@@ -918,51 +866,27 @@
             item.type === "file" && /\.(jpe?g|png|webp|gif)$/i.test(item.name)
           );
 
-          if (!images.length) {
-            statusEl.textContent = "No photos in the Gallery folder yet.";
+          if (images.length === 0) {
+            statusEl.textContent = "No photos yet. Upload some to the 'Gallery' folder in the repo.";
             return;
           }
 
           statusEl.textContent = "";
-          slideshow.innerHTML = "";
-          dotsContainer.innerHTML = "";
+          gridEl.innerHTML = "";
 
-          images.forEach((img, index) => {
-            const slideDiv = document.createElement("div");
-            slideDiv.className = "mySlide fade";
+          images.forEach(img => {
+            const label = niceLabelFromFilename(img.name);
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "gallery-item";
+            itemDiv.dataset.label = label;
 
             const imageEl = document.createElement("img");
             imageEl.src = img.download_url;
-            imageEl.alt = img.name;
+            imageEl.alt = label;
 
-            slideDiv.appendChild(imageEl);
-            slideshow.appendChild(slideDiv);
-
-            const dot = document.createElement("span");
-            dot.className = "dot";
-            dot.onclick = () => currentSlide(index + 1);
-            dotsContainer.appendChild(dot);
+            itemDiv.appendChild(imageEl);
+            gridEl.appendChild(itemDiv);
           });
-
-          // Add arrows
-          const prev = document.createElement("a");
-          prev.className = "prev";
-          prev.innerHTML = "&#10094;";
-          prev.onclick = () => plusSlides(-1);
-
-          const next = document.createElement("a");
-          next.className = "next";
-          next.innerHTML = "&#10095;";
-          next.onclick = () => plusSlides(1);
-
-          slideshow.appendChild(prev);
-          slideshow.appendChild(next);
-
-          slideIndex = 1;
-          showSlides(slideIndex);
-
-          // Optional autoplay:
-          // setInterval(() => { plusSlides(1); }, 5000);
         })
         .catch(err => {
           console.error(err);
@@ -970,10 +894,15 @@
         });
     }
 
+    // Load gallery when page loads
+    loadGallery();
+    // ---------- END AUTO GALLERY ----------
+
     // ---------- FORMS → GOOGLE SHEETS ----------
     function handleForm(formId, statusId, formType) {
       const form = document.getElementById(formId);
       const statusEl = document.getElementById(statusId);
+
       if (!form || !statusEl) return;
 
       form.addEventListener("submit", function (e) {
@@ -994,31 +923,29 @@
           },
           body
         })
-          .then(response => response.json())
-          .then(result => {
-            if (result.success) {
-              statusEl.textContent = "Thank you! Your submission has been received.";
-              statusEl.classList.add("success");
-              form.reset();
-            } else {
-              statusEl.textContent = "Something went wrong. Please try again.";
-              statusEl.classList.add("error");
-            }
-          })
-          .catch(err => {
-            console.error(err);
-            statusEl.textContent = "Network error. Please try again.";
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            statusEl.textContent = "Thank you! Your submission has been received.";
+            statusEl.classList.add("success");
+            form.reset();
+          } else {
+            statusEl.textContent = "Something went wrong. Please try again.";
             statusEl.classList.add("error");
-          });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          statusEl.textContent = "Network error. Please try again.";
+          statusEl.classList.add("error");
+        });
       });
     }
 
-    // ---------- INITIALISE ON LOAD ----------
-    window.addEventListener("DOMContentLoaded", () => {
-      buildGalleryFromGitHub();
-      handleForm("registration-form", "reg-status", "registration");
-      handleForm("ideas-form", "idea-status", "idea");
-    });
+    // Attach handlers to both forms
+    handleForm("registration-form", "reg-status", "registration");
+    handleForm("ideas-form", "idea-status", "idea");
+    // ---------- END FORMS ----------
   </script>
 </body>
 </html>
