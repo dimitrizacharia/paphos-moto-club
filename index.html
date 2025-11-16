@@ -824,9 +824,9 @@
     © <span id="year"></span> Paphos Motorcycle Club. Built with 🏍️ and GitHub Pages.
   </footer>
 
-  <script>
+    <script>
     // ---------- CONFIG ----------
-    // Your Google Apps Script web app URL (you gave me this)
+    // Your Google Apps Script web app URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNPJL4NOxzsuVNyNRYIDp-79wZ9XGNdtHsG75aoxfPmNU1UhGm0rBeB4eHvhLio8xBgw/exec";
 
     // GitHub info for auto gallery
@@ -887,7 +887,7 @@
           });
         })
         .catch(err => {
-          console.error(err);
+          console.error("Gallery error:", err);
           statusEl.textContent = "Network error loading gallery.";
         });
     }
@@ -917,20 +917,33 @@
           },
           body
         })
-        .then(response => response.json())
-        .then(result => {
-          if (result.success) {
-            statusEl.textContent = "Thank you! Your submission has been received.";
-            statusEl.classList.add("success");
-            form.reset();
-          } else {
-            statusEl.textContent = "Something went wrong. Please try again.";
-            statusEl.classList.add("error");
+        .then(async (response) => {
+          const text = await response.text();
+          console.log("Script raw response:", text);
+
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
           }
+
+          // Try to parse JSON if possible, but don't depend on it
+          let result = {};
+          try {
+            result = JSON.parse(text);
+          } catch (e) {
+            // not JSON, ignore – we still treat 200 as success
+          }
+
+          if (result.success === false) {
+            throw new Error(result.error || "Script reported failure");
+          }
+
+          statusEl.textContent = "Thank you! Your submission has been received.";
+          statusEl.classList.add("success");
+          form.reset();
         })
         .catch(err => {
-          console.error(err);
-          statusEl.textContent = "Network error. Please try again.";
+          console.error("Form submit error:", err);
+          statusEl.textContent = "Something went wrong. Please try again.";
           statusEl.classList.add("error");
         });
       });
