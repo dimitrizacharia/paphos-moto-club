@@ -634,28 +634,21 @@
 
     <!-- GALLERY -->
     <section id="gallery">
-      <header class="section-header">
-        <div>
-          <h2>Club Gallery</h2>
-          <p>Race days, trail rides, coffee stops and late-night garage moments. Replace these images with your own photos.</p>
-        </div>
-      </header>
+  <header class="section-header">
+    <div>
+      <h2>Club Gallery</h2>
+      <p>Race days, trail rides, coffee stops and late-night garage moments. Just upload photos to the gallery folder.</p>
+    </div>
+  </header>
 
-      <div class="gallery-grid">
-        <div class="gallery-item" data-label="Enduro">
-          <img src="https://images.pexels.com/photos/1469617/pexels-photo-1469617.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Enduro ride">
-        </div>
-        <div class="gallery-item" data-label="Street Ride">
-          <img src="https://images.pexels.com/photos/210182/pexels-photo-210182.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Street ride">
-        </div>
-        <div class="gallery-item" data-label="Sunset">
-          <img src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Sunset ride">
-        </div>
-        <div class="gallery-item" data-label="Paddock">
-          <img src="https://images.pexels.com/photos/1469498/pexels-photo-1469498.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Pit area">
-        </div>
-      </div>
-    </section>
+  <div id="gallery-status" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
+    Loading photos...
+  </div>
+
+  <div id="gallery-grid" class="gallery-grid">
+    <!-- Photos will be loaded here by JavaScript -->
+  </div>
+</section>
 
     <!-- EVENTS -->
     <section id="events">
