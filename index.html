@@ -633,22 +633,42 @@
     </section>
 
     <!-- GALLERY -->
-    <section id="gallery">
-  <header class="section-header">
-    <div>
-      <h2>Club Gallery</h2>
-      <p>Race days, trail rides, coffee stops and late-night garage moments. Just upload photos to the gallery folder.</p>
-    </div>
-  </header>
+   <section id="gallery">
+  <h2>Photo Gallery</h2>
 
-  <div id="gallery-status" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
-    Loading photos...
+  <div class="slideshow-container">
+
+    <!-- Slide 1 -->
+    <div class="mySlide fade">
+      <img src="Gallery/IMAGE1.JPG" alt="Paphos Moto Club 1">
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="mySlide fade">
+      <img src="Gallery/IMAGE2.JPG" alt="Paphos Moto Club 2">
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="mySlide fade">
+      <img src="Gallery/IMAGE3.JPG" alt="Paphos Moto Club 3">
+    </div>
+
+    <!-- Add more slides as needed, copy the block above -->
+
+    <!-- Next/prev buttons -->
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
   </div>
 
-  <div id="gallery-grid" class="gallery-grid">
-    <!-- Photos will be loaded here by JavaScript -->
+  <!-- Dots -->
+  <div class="dots">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+    <!-- Add more dots if you add more slides -->
   </div>
 </section>
+
 
     <!-- EVENTS -->
     <section id="events">
