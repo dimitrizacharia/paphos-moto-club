@@ -362,7 +362,7 @@
       }
     }
 
-    /* GALLERY GRID */
+    /* SIMPLE STATIC GALLERY (manual for now) */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -374,7 +374,6 @@
       border-radius: 16px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.06);
-      cursor: pointer;
       background: #000;
     }
 
@@ -382,27 +381,7 @@
       width: 100%;
       height: 170px;
       object-fit: cover;
-      transition: transform 0.5s ease, opacity 0.5s ease;
       display: block;
-    }
-
-    .gallery-item::after {
-      content: attr(data-label);
-      position: absolute;
-      left: 10px;
-      bottom: 10px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      background: rgba(0,0,0,0.65);
-      color: #fff;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.08);
-      opacity: 0.9;
     }
 
     /* EVENTS */
@@ -520,7 +499,6 @@
       font-size: 0.85rem;
       color: var(--text-main);
       outline: none;
-      transition: border var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
       font-family: inherit;
     }
 
@@ -535,13 +513,6 @@
       color: rgba(255,255,255,0.35);
     }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--accent-light);
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 0 20px rgba(229,57,53,0.55);
-      background: rgba(3,4,10,1);
-      transform: translateY(-0.5px);
-    }
-
     .form-footer {
       display: flex;
       justify-content: space-between;
@@ -553,17 +524,9 @@
       flex-wrap: wrap;
     }
 
-    .form-status {
-      font-size: 0.8rem;
-      min-height: 18px;
-    }
-
-    .form-status.success {
-      color: #9ccc65;
-    }
-
-    .form-status.error {
-      color: #ff8a80;
+    .form-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
 
     /* FOOTER */
@@ -632,18 +595,30 @@
       </div>
     </section>
 
-    <!-- GALLERY: AUTO GRID -->
+    <!-- SIMPLE STATIC GALLERY (manual for now) -->
     <section id="gallery">
       <header class="section-header">
         <div>
           <h2>Gallery</h2>
-          <p>Latest photos from Paphos Moto Club — automatically loaded from the Gallery folder.</p>
+          <p>Photos from rides, races and garage nights.</p>
         </div>
-        <p id="gallery-status">Loading latest club photos…</p>
+        <p class="form-note">
+          To add photos, upload them to <code>Gallery/</code> in GitHub and add <code>&lt;img&gt;</code> tags below.
+        </p>
       </header>
 
-      <div id="gallery-grid" class="gallery-grid">
-        <!-- Images injected by JS -->
+      <div class="gallery-grid">
+        <!-- EXAMPLE IMAGES – change filenames to yours -->
+        <div class="gallery-item">
+          <img src="Gallery/photo1.jpg" alt="Club ride 1">
+        </div>
+        <div class="gallery-item">
+          <img src="Gallery/photo2.jpg" alt="Club ride 2">
+        </div>
+        <div class="gallery-item">
+          <img src="Gallery/photo3.jpg" alt="Club ride 3">
+        </div>
+        <!-- Add more <div class="gallery-item"><img src="Gallery/yourfile.jpg"></div> as needed -->
       </div>
     </section>
 
@@ -654,11 +629,10 @@
           <h2>Upcoming Events</h2>
           <p>Group rides, training days and race weekends. Edit these cards with your real events.</p>
         </div>
-        <p>To add an event, copy an event card below and change the text.</p>
+        <p class="form-note">To add an event, duplicate an event card and edit the text.</p>
       </header>
 
       <div class="events-list">
-        <!-- EVENT CARD 1 -->
         <article class="event-card">
           <div class="event-chip">Group Ride</div>
           <h3 class="event-title">Coastal Sunset Cruise</h3>
@@ -675,7 +649,6 @@
           </div>
         </article>
 
-        <!-- EVENT CARD 2 -->
         <article class="event-card">
           <div class="event-chip">Enduro Training</div>
           <h3 class="event-title">Hard Enduro Skills Day</h3>
@@ -692,7 +665,6 @@
           </div>
         </article>
 
-        <!-- EVENT CARD 3 -->
         <article class="event-card">
           <div class="event-chip">Social</div>
           <h3 class="event-title">Garage Night &amp; BBQ</h3>
@@ -716,17 +688,24 @@
       <header class="section-header">
         <div>
           <h2>Join the Club &amp; Share Your Ideas</h2>
-          <p>Online registration for new members plus a dedicated space to suggest new rides, races or events.</p>
+          <p>Online registration for new members plus a space to suggest rides, races or social events.</p>
         </div>
       </header>
 
       <div class="form-grid">
-        <!-- REGISTRATION FORM -->
-        <form id="registration-form">
+        <!-- REGISTRATION FORM – DIRECT POST TO GOOGLE SCRIPT -->
+        <form
+          id="registration-form"
+          action="https://script.google.com/macros/s/AKfycbwNPJL4NOxzsuVNyNRYIDp-79wZ9XGNdtHsG75aoxfPmNU1UhGm0rBeB4eHvhLio8xBgw/exec"
+          method="POST"
+          target="_blank"
+        >
           <h3>Online Registration</h3>
-          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
-            Fill in your details and we’ll get back to you with membership info and next steps.
+          <p class="form-note">
+            When you submit, a new tab will open with a thank-you message.
           </p>
+
+          <input type="hidden" name="formType" value="registration">
 
           <div class="form-row">
             <div class="field half">
@@ -768,16 +747,23 @@
 
           <div class="form-footer">
             <button type="submit" class="btn btn-primary">Submit Registration</button>
-            <span class="form-status" id="reg-status"></span>
+            <span class="form-note">You will also receive a confirmation email (to the admin address).</span>
           </div>
         </form>
 
-        <!-- IDEAS FORM -->
-        <form id="ideas-form">
+        <!-- IDEAS FORM – DIRECT POST TO GOOGLE SCRIPT -->
+        <form
+          id="ideas-form"
+          action="https://script.google.com/macros/s/AKfycbwNPJL4NOxzsuVNyNRYIDp-79wZ9XGNdtHsG75aoxfPmNU1UhGm0rBeB4eHvhLio8xBgw/exec"
+          method="POST"
+          target="_blank"
+        >
           <h3 id="ideas">Event Ideas</h3>
-          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">
-            Got an idea for a ride, race, training or social night? Drop it here.
+          <p class="form-note">
+            New event ideas go straight to the organisers by email.
           </p>
+
+          <input type="hidden" name="formType" value="idea">
 
           <div class="field">
             <label for="idea-name">Name *</label>
@@ -813,7 +799,7 @@
 
           <div class="form-footer">
             <button type="submit" class="btn btn-outline">Send Idea</button>
-            <span class="form-status" id="idea-status"></span>
+            <span class="form-note">A tab will open briefly to confirm your idea was sent.</span>
           </div>
         </form>
       </div>
@@ -824,137 +810,8 @@
     © <span id="year"></span> Paphos Motorcycle Club. Built with 🏍️ and GitHub Pages.
   </footer>
 
-    <script>
-    // ---------- CONFIG ----------
-    // Your Google Apps Script web app URL
-    const SCRIPT_URL = https://script.google.com/macros/s/AKfycbwNPJL4NOxzsuVNyNRYIDp-79wZ9XGNdtHsG75aoxfPmNU1UhGm0rBeB4eHvhLio8xBgw/exec
-
-    // GitHub info for auto gallery
-    const GITHUB_USER = "dimitrizacharia";
-    const GITHUB_REPO = "paphosmc.org";
-    const GALLERY_PATH = "Gallery"; // folder name in repo (capital G)
-
-    // Dynamic year
+  <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-
-    // ---------- AUTO GALLERY FROM GITHUB ----------
-    const GITHUB_GALLERY_API =
-      `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GALLERY_PATH}`;
-
-    function niceLabelFromFilename(name) {
-      let base = name.replace(/\.[^.]+$/, "");        // remove extension
-      base = base.replace(/[-_]+/g, " ");             // -/_ -> space
-      return base.replace(/\b\w/g, c => c.toUpperCase()); // capitalise first letters
-    }
-
-    function loadGallery() {
-      const statusEl = document.getElementById("gallery-status");
-      const gridEl = document.getElementById("gallery-grid");
-      if (!statusEl || !gridEl) return;
-
-      fetch(GITHUB_GALLERY_API)
-        .then(res => res.json())
-        .then(items => {
-          if (!Array.isArray(items)) {
-            statusEl.textContent = "Could not load gallery.";
-            return;
-          }
-
-          const images = items.filter(item =>
-            item.type === "file" && /\.(jpe?g|png|webp|gif)$/i.test(item.name)
-          );
-
-          if (images.length === 0) {
-            statusEl.textContent = "No photos yet. Upload some to the 'Gallery' folder in the repo.";
-            return;
-          }
-
-          statusEl.textContent = "";
-          gridEl.innerHTML = "";
-
-          images.forEach(img => {
-            const label = niceLabelFromFilename(img.name);
-            const itemDiv = document.createElement("div");
-            itemDiv.className = "gallery-item";
-            itemDiv.dataset.label = label;
-
-            const imageEl = document.createElement("img");
-            imageEl.src = img.download_url;
-            imageEl.alt = label;
-
-            itemDiv.appendChild(imageEl);
-            gridEl.appendChild(itemDiv);
-          });
-        })
-        .catch(err => {
-          console.error("Gallery error:", err);
-          statusEl.textContent = "Network error loading gallery.";
-        });
-    }
-
-    // ---------- FORMS → GOOGLE SHEETS ----------
-    function handleForm(formId, statusId, formType) {
-      const form = document.getElementById(formId);
-      const statusEl = document.getElementById(statusId);
-
-      if (!form || !statusEl) return;
-
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        statusEl.textContent = "Sending...";
-        statusEl.classList.remove("success", "error");
-
-        const formData = new FormData(form);
-        formData.append("formType", formType);
-
-        const body = new URLSearchParams(formData).toString();
-
-        fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-          },
-          body
-        })
-        .then(async (response) => {
-          const text = await response.text();
-          console.log("Script raw response:", text);
-
-          if (!response.ok) {
-            throw new Error("HTTP " + response.status);
-          }
-
-          // Try to parse JSON if possible, but don't depend on it
-          let result = {};
-          try {
-            result = JSON.parse(text);
-          } catch (e) {
-            // not JSON, ignore – we still treat 200 as success
-          }
-
-          if (result.success === false) {
-            throw new Error(result.error || "Script reported failure");
-          }
-
-          statusEl.textContent = "Thank you! Your submission has been received.";
-          statusEl.classList.add("success");
-          form.reset();
-        })
-        .catch(err => {
-          console.error("Form submit error:", err);
-          statusEl.textContent = "Something went wrong. Please try again.";
-          statusEl.classList.add("error");
-        });
-      });
-    }
-
-    // ---------- INITIALISE ----------
-    window.addEventListener("DOMContentLoaded", () => {
-      loadGallery();
-      handleForm("registration-form", "reg-status", "registration");
-      handleForm("ideas-form", "idea-status", "idea");
-    });
   </script>
 </body>
 </html>
